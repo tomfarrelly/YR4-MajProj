@@ -12,3 +12,4 @@ travelRouter.put('/:id', TravelController.apiUpdateTravel);
 
 
 export default travelRouter;
+

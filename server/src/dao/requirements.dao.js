@@ -10,7 +10,7 @@ const DEFAULT_SORT = [["travel_id", -1]]
 class RequirementsDAO {
     // inject method gives reference to connection & stores it in restaurants
     static async injectDB(conn) {
-        if (travels) { // checks if restaurants has a value
+        if (travels) { // checks if travels has a value
             return // if it does, return 
         }
         try {
@@ -18,7 +18,7 @@ class RequirementsDAO {
             restdb = await conn.db(process.env.DB_NAME);
             // reference to restaurants collection inside the db
             travels = await restdb.collection("travel");
-            //restrictions = await restdb.collection("covoid_collection");
+           
             requirements = await restdb.collection("requirements");
         } 
         catch (e) {
@@ -84,7 +84,12 @@ class RequirementsDAO {
                         ], 
                         'as': 'departure_country' // will add this all as a restrictions property of the country object
                     }
-                }, 
+                },
+                { 
+
+                    '$unwind': '$departure_country' // $unwind used for getting data in object or for one record only
+                    
+                },  
                 {
                     '$lookup': {
                         'from': 'countries', 
@@ -110,6 +115,13 @@ class RequirementsDAO {
                         'as': 'arrival_country' // will add this all as a restrictions property of the country object
                     }
                 }, 
+
+                { 
+
+                    '$unwind': '$arrival_country' // $unwind used for getting data in object or for one record only
+                    
+                },  
+
                 {
                     '$lookup': {
                         'from': 'requirements', 
@@ -241,6 +253,11 @@ class RequirementsDAO {
                             'as': 'pcr_requirements' // will add this all as a restrictions property of the country object
                         }
                     },
+                    { 
+
+                        '$unwind': '$pcr_requirements' // $unwind used for getting data in object or for one record only
+                        
+                    }, 
                     {
                         '$lookup': {
                             'from': 'antigen', 
@@ -264,7 +281,12 @@ class RequirementsDAO {
                             ], 
                             'as': 'antigen_requirements' // will add this all as a restrictions property of the country object
                         }
-                    }
+                    },
+                    { 
+
+                        '$unwind': '$antigen_requirements' // $unwind used for getting data in object or for one record only
+                        
+                    } 
 
             ];
     
@@ -317,6 +339,13 @@ class RequirementsDAO {
                         'as': 'departure_country' // will add this all as a restrictions property of the country object
                     }
                 }, 
+
+                { 
+
+                    '$unwind': '$departure_country' // $unwind used for getting data in object or for one record only
+                    
+                },  
+
                 {
                     '$lookup': {
                         'from': 'countries', 
@@ -342,6 +371,13 @@ class RequirementsDAO {
                         'as': 'arrival_country' // will add this all as a restrictions property of the country object
                     }
                 }, 
+
+                { 
+
+                    '$unwind': '$arrival_country' // $unwind used for getting data in object or for one record only
+                    
+                },  
+                
                 {
                     '$lookup': {
                         'from': 'requirements', 

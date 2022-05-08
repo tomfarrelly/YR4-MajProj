@@ -3,7 +3,6 @@ import { ObjectId } from 'bson';
 // variables created when file is loaded
 let requirements;
 let travels;
-//let restrictions;
 let restdb;
 const DEFAULT_SORT = [["travel_id", -1]]
 
@@ -246,7 +245,12 @@ class TravelDAO {
                         ], 
                         'as': 'departure_country' // will add this all as a restrictions property of the country object
                     }
-                }, 
+                },
+                { 
+
+                    '$unwind': '$departure_country' // $unwind used for getting data in object or for one record only
+                    
+                },  
                 {
                     '$lookup': {
                         'from': 'countries', 
@@ -272,6 +276,13 @@ class TravelDAO {
                         'as': 'arrival_country' // will add this all as a restrictions property of the country object
                     }
                 }, 
+
+                { 
+
+                    '$unwind': '$arrival_country' // $unwind used for getting data in object or for one record only
+                    
+                },  
+                
                 {
                     '$lookup': {
                         'from': 'requirements', 
@@ -326,6 +337,13 @@ class TravelDAO {
                         'as': 'vaccine_requirements' // will add this all as a restrictions property of the country object
                     }
                 },
+
+                { 
+
+                    '$unwind': '$vaccine_requirements' // $unwind used for getting data in object or for one record only
+                    
+                },  
+
                     {
                         '$lookup': {
                             'from': 'quarantine', 
@@ -350,6 +368,13 @@ class TravelDAO {
                             'as': 'quarantine_requirements' // will add this all as a restrictions property of the country object
                         }
                     },
+
+                    { 
+
+                        '$unwind': '$quarantine_requirements' // $unwind used for getting data in object or for one record only
+                        
+                    },  
+
                     {
                         '$lookup': {
                             'from': 'test', 
@@ -403,6 +428,13 @@ class TravelDAO {
                             'as': 'pcr_requirements' // will add this all as a restrictions property of the country object
                         }
                     },
+
+                    { 
+
+                        '$unwind': '$pcr_requirements' // $unwind used for getting data in object or for one record only
+                        
+                    },  
+
                     {
                         '$lookup': {
                             'from': 'antigen', 
@@ -426,6 +458,13 @@ class TravelDAO {
                             ], 
                             'as': 'antigen_requirements' // will add this all as a restrictions property of the country object
                         }
+                    },
+
+
+                    { 
+
+                        '$unwind': '$pcr_requirements' // $unwind used for getting data in object or for one record only
+                        
                     }
                 
                     
@@ -482,6 +521,9 @@ class TravelDAO {
                         'as': 'departure_country' // will add this all as a restrictions property of the country object
                     }
                 }, 
+                 
+                
+                
                 {
                     '$lookup': {
                         'from': 'countries', 
@@ -507,6 +549,9 @@ class TravelDAO {
                         'as': 'arrival_country' // will add this all as a restrictions property of the country object
                     }
                 }, 
+
+                
+
                 {
                     '$lookup': {
                         'from': 'requirements', 
@@ -638,6 +683,11 @@ class TravelDAO {
                             'as': 'pcr_requirements' // will add this all as a restrictions property of the country object
                         }
                     },
+                    { 
+
+                        '$unwind': '$pcr_requirements' // $unwind used for getting data in object or for one record only
+                        
+                    }, 
                     {
                         '$lookup': {
                             'from': 'antigen', 
@@ -661,7 +711,12 @@ class TravelDAO {
                             ], 
                             'as': 'antigen_requirements' // will add this all as a restrictions property of the country object
                         }
-                    }
+                    },
+                    { 
+
+                        '$unwind': '$antigen_requirements' 
+                        
+                    }, 
 
             ];
     

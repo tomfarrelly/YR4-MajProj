@@ -1,9 +1,10 @@
 import TravelDAO from "../dao/travel.dao.js"
+import { User } from "./users.controller.js";
 
 export default class TravelController {
     
     static async apiGetTravel(req, res, next) {
-        const  TRAVEL_PER_PAGE = 6
+        const  TRAVEL_PER_PAGE = 5
         const { travelList, totalNumTravel } = await TravelDAO.getTravel();
         let response = {
             travel: travelList,
@@ -17,13 +18,19 @@ export default class TravelController {
 
     static async apiGetTravelById(req, res, next) {
         try {
+            const userJwt = req.get("Authorization").slice("Bearer ".length); // pulling token from request error
+            const user = await User.decoded(userJwt); // decoding token
+            var { error } = user;
+            if (error) {
+                res.status(401).json({ error });
+                return;
+            }
             let id = req.params.id || {};
             let travel = await TravelDAO.getTravelById(id);
             if (!travel) {
                 res.status(404).json({ error: "Not found" });
                 return;
             }
-           // let updated_type = country.lastupdated instanceof Date ? "Date" : "other";
             res.json({ travel });
         }
         catch (e) {
@@ -35,7 +42,13 @@ export default class TravelController {
     static async apiGetTravelRequirementsByDepartureAndArrival(req, res, next) {
         try {
 
-            console.log(req.body);
+            const userJwt = req.get("Authorization").slice("Bearer ".length); // pulling token from request 
+            const user = await User.decoded(userJwt); // decoding token
+            var { error } = user;
+            if (error) {
+                res.status(401).json({ error });
+                return;
+            }
             
             let departure_id = req.body.departure_id || {};
             let arrival_id = req.body.arrival_id || {};
@@ -49,16 +62,17 @@ export default class TravelController {
                 res.status(404).json({ error: "Not found" });
                 return;
             }
-           // let updated_type = country.lastupdated instanceof Date ? "Date" : "other";
             res.json({ travels });
            
         }
+
 
         catch (e) {
             console.log(`api, ${e}`)
             res.status(500).json({ error: e })
         }
     }
+
 
     static async apiUpdateTravel(req, res, next) {
         // USer Authorization

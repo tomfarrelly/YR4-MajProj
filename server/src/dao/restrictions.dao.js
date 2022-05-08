@@ -9,7 +9,7 @@ const DEFAULT_SORT = [["Country_id", -1]]
 class RestrictionsDAO {
     // inject method gives reference to connection & stores it in restaurants
     static async injectDB(conn) {
-        if (countries) { // checks if restaurants has a value
+        if (countries) { // checks if countries has a value
             return // if it does, return 
         }
         try {
