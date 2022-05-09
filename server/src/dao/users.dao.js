@@ -91,47 +91,6 @@ export default class UsersDAO {
         }
     }
 
-    // static async updatePreferences(email, preferences) {
-    //     try {
-    //         preferences = preferences || {}
-    //         const updateResponse = await users.updateOne(
-    //             { email: email },
-    //             { $set: { preferences: preferences } },
-    //         );
 
-    //         if (updateResponse.matchedCount === 0) {
-    //             return { error: "No user found with that email" };
-    //         }
-    //         return updateResponse;
-    //     } 
-    //     catch (e) {
-    //         console.error(
-    //             `An error occurred while updating this user's preferences, ${e}`,
-    //         );
-    //         return { error: e };
-    //     }
-    // }
-
-    static async checkAdmin(email) {
-        try {
-            const { isAdmin } = await this.getUser(email);
-            return isAdmin || false;
-        } 
-        catch (e) {
-            return { error: e };
-        }
-    }
-
-    static async makeAdmin(email) {
-        try {
-            const updateResponse = users.updateOne(
-                { email },
-                { $set: { isAdmin: true } },
-            )
-            return updateResponse;
-        } 
-        catch (e) {
-            return { error: e }
-        }
-    }
+    
 }
