@@ -192,10 +192,6 @@ export default class UsersController {
                 return;
             }
 
-            // await UsersDAO.updatePreferences(
-            //     userFromHeader.email,
-            //     req.body.preferences,
-            // );
             const userFromDB = await UsersDAO.getUser(userFromHeader.email);
             const updatedUser = new User(userFromDB);
 
